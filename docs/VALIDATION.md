@@ -34,12 +34,14 @@ Public surface: <https://rustycohl.github.io/ATLAS/>
 
 1. GitHub Actions deployment completed successfully.
 2. Public Page exposed version `0.1.0-alpha.1` for the initial release.
-3. The `0.1.0-alpha.2` JSON-boundary correction passed its repository gate and
-   a local composed-browser smoke inside BattleStarSol; public smoke remains
-   pending deployment.
+3. The `0.1.0-alpha.2` JSON-boundary correction passed its six-test repository
+   gate, local composed-browser smoke inside BattleStarSol, and GitHub Pages
+   workflow.
 4. Default layers activated: 3/18.
 5. Public coordinate selection opened the inspector and logged the selection.
 6. “Export Selection” enabled after selection.
+7. Public `0.1.0-alpha.2` retained the 3/18 default layer set; a WebGL
+   coordinate selection opened the inspector and enabled Export Selection.
 6. Console errors and warnings: none.
 
 ## Remaining release checks
