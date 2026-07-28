@@ -1,0 +1,16 @@
+{
+  "name": "gzg-atlas",
+  "version": "0.1.0-alpha.1",
+  "description": "Standalone browser-local strategic globe and deployment-selection galaxy.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "test": "node --test tests/atlas.test.mjs",
+    "check": "node --check site/galaxy-io.js"
+  },
+  "license": "MIT"
+}

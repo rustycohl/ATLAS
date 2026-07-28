@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://groundzerogames.net/contracts/atlas-feed.schema.json",
+  "title": "A.T.L.A.S. strategic feed payload",
+  "type": "object",
+  "required": [
+    "schema",
+    "entities"
+  ],
+  "properties": {
+    "schema": {
+      "const": "gzg.atlas.feed/1.0"
+    },
+    "entities": {
+      "type": "array",
+      "maxItems": 2000,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "lat",
+          "lon"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "lat": {
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90
+          },
+          "lon": {
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180
+          },
+          "alt": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000
+          },
+          "color": {
+            "type": "string",
+            "pattern": "^#[0-9a-fA-F]{6}$"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "layer": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "owned": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "filter": {
+      "enum": [
+        "none",
+        "detection_radius"
+      ]
+    },
+    "sensor_units": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "lat",
+          "lon",
+          "radius_km"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "lat": {
+            "type": "number",
+            "minimum": -90,
+            "maximum": 90
+          },
+          "lon": {
+            "type": "number",
+            "minimum": -180,
+            "maximum": 180
+          },
+          "radius_km": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 20050
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

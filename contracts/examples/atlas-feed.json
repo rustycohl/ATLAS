@@ -1,0 +1,33 @@
+{
+  "gzg": "galaxy-message",
+  "version": "1.0",
+  "id": "atlas-feed-demo-001",
+  "type": "atlas.feed",
+  "source": {
+    "galaxy": "example-local-feed",
+    "version": "1.0.0",
+    "instance": "manual-example"
+  },
+  "target": {
+    "galaxy": "ATLAS",
+    "capability": "strategic.render-feed"
+  },
+  "created_at": "2026-07-28T12:00:00.000Z",
+  "payload": {
+    "schema": "gzg.atlas.feed/1.0",
+    "entities": [
+      {
+        "id": "proving-ground",
+        "lat": 34.0522,
+        "lon": -118.2437,
+        "alt": 0,
+        "color": "#38bdf8",
+        "label": "Proving Ground",
+        "layer": "Local test",
+        "description": "Standalone deterministic feed example.",
+        "owned": true
+      }
+    ],
+    "filter": "none"
+  }
+}
