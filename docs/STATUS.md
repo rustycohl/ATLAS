@@ -1,6 +1,6 @@
 # Status
 
-Version: `0.1.0-alpha.1`
+Version: `0.1.0-alpha.2`
 Date: 2026-07-28
 Release state: alpha generic strategic galaxy
 
@@ -16,6 +16,7 @@ Release state: alpha generic strategic galaxy
 - bookmarkable snapshot state;
 - bounded raw and versioned feed input;
 - coordinate and event selection;
+- JSON-only, size-bounded selection envelopes with bounded optional fields;
 - versioned output through download and browser composition adapters; and
 - repository-level automated tests and browser self-test.
 

@@ -121,6 +121,7 @@ test("the browser adapter emits the standard envelope and legacy compatibility s
       setItem: () => {},
     },
     structuredClone,
+    TextEncoder,
     window: browserWindow,
   };
   context.globalThis = context;
@@ -142,18 +143,41 @@ test("the browser adapter emits the standard envelope and legacy compatibility s
   });
 
   assert.equal(emitted.type, "atlas.selection");
+  assert.equal(emitted.source.version, "0.1.0-alpha.2");
   assert.equal(emitted.payload.schema, "gzg.atlas.selection/1.0");
   assert.equal(emitted.payload.selection.latitude, 12.25);
   assert.equal(emitted.target.capability, "tactical.deploy");
   assert.equal(posted.length, 2);
   assert.equal(posted[0].message.gzg, "galaxy-message");
   assert.equal(posted[1].message.channel, "atlas");
-  assert.deepEqual(posted[1].message.galaxy_message, emitted);
+  assert.equal(
+    JSON.stringify(posted[1].message.galaxy_message),
+    JSON.stringify(emitted),
+  );
   assert.equal(button.disabled, false);
 
   const unsupported = structuredClone(emitted);
   unsupported.version = "2.0";
   assert.throws(() => browserWindow.ATLAS_IO.validate(unsupported), /Unsupported/);
+
+  const bounded = browserWindow.ATLAS_IO.createSelection({
+    deployable: true,
+    type: "crisis",
+    name: "N".repeat(500),
+    description: "D".repeat(1000),
+    city: undefined,
+    lat: 40,
+    lng: -74,
+  }, {
+    id: "atlas-test-bounded",
+    created_at: "2026-07-28T12:00:00.000Z",
+  });
+  assert.equal(bounded.payload.selection.name.length, 160);
+  assert.equal(bounded.payload.selection.description.length, 500);
+  assert.equal("city" in bounded.payload.selection, false);
+  const invalid = structuredClone(bounded);
+  invalid.payload.selection.latitude = Number.NaN;
+  assert.throws(() => browserWindow.ATLAS_IO.validate(invalid), /non-finite/);
 });
 
 test("untrusted feed text is bounded and telemetry never interpolates HTML", async () => {

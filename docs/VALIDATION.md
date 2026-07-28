@@ -33,10 +33,13 @@ Surface: isolated in-app Chromium at `http://127.0.0.1:8780/`
 Public surface: <https://rustycohl.github.io/ATLAS/>
 
 1. GitHub Actions deployment completed successfully.
-2. Public Page exposed version `0.1.0-alpha.1`.
-3. Default layers activated: 3/18.
-4. Public coordinate selection opened the inspector and logged the selection.
-5. “Export Selection” enabled after selection.
+2. Public Page exposed version `0.1.0-alpha.1` for the initial release.
+3. The `0.1.0-alpha.2` JSON-boundary correction passed its repository gate and
+   a local composed-browser smoke inside BattleStarSol; public smoke remains
+   pending deployment.
+4. Default layers activated: 3/18.
+5. Public coordinate selection opened the inspector and logged the selection.
+6. “Export Selection” enabled after selection.
 6. Console errors and warnings: none.
 
 ## Remaining release checks

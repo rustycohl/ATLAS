@@ -1,6 +1,6 @@
 {
   "name": "gzg-atlas",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "Standalone browser-local strategic globe and deployment-selection galaxy.",
   "private": true,
   "type": "module",

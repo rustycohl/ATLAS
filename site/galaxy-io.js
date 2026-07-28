@@ -2,8 +2,9 @@
   "use strict";
 
   const MESSAGE_VERSION = "1.0";
-  const PRODUCT_VERSION = "0.1.0-alpha.1";
+  const PRODUCT_VERSION = "0.1.0-alpha.2";
   const CAPABILITY_PATTERN = /^[a-z0-9]+(?:[.-][a-z0-9]+)+$/;
+  const MAX_MESSAGE_BYTES = 2_000_000;
   let sequence = 0;
   let latestMessage = null;
 
@@ -25,6 +26,27 @@
     return value !== null && typeof value === "object" && !Array.isArray(value);
   }
 
+  function jsonClone(value) {
+    let json;
+    try {
+      json = JSON.stringify(value, (_key, item) => {
+        if (typeof item === "number" && !Number.isFinite(item)) {
+          throw new TypeError("Galaxy messages cannot contain non-finite numbers.");
+        }
+        if (["bigint", "function", "symbol", "undefined"].includes(typeof item)) {
+          throw new TypeError("Galaxy messages must contain JSON values only.");
+        }
+        return item;
+      });
+    } catch (error) {
+      throw new TypeError(`Galaxy message is not valid JSON: ${error.message}`);
+    }
+    if (new TextEncoder().encode(json).byteLength > MAX_MESSAGE_BYTES) {
+      throw new RangeError("Galaxy message exceeds the supported size.");
+    }
+    return JSON.parse(json);
+  }
+
   function validate(message) {
     if (!isObject(message)) throw new TypeError("Galaxy message must be an object.");
     if (message.gzg !== "galaxy-message") throw new TypeError("Invalid galaxy discriminator.");
@@ -41,23 +63,39 @@
     if (new Date(message.created_at).toISOString() !== message.created_at) {
       throw new TypeError("created_at must be an exact UTC ISO-8601 timestamp.");
     }
-    return structuredClone(message);
+    return jsonClone(message);
   }
 
   function normalizedSelection(input) {
-    const {
-      lat,
-      lng,
-      deployable = false,
-      ...selection
-    } = isObject(input) ? input : {};
+    const candidate = isObject(input) ? input : {};
+    const selection = {};
+    for (const [key, fallback, limit] of [
+      ["type", "unknown", 40],
+      ["name", "Selected A.T.L.A.S. target", 160],
+      ["id", "", 256],
+      ["city", "", 120],
+      ["category", "", 120],
+      ["description", "", 500],
+    ]) {
+      if (candidate[key] === undefined || candidate[key] === null) continue;
+      selection[key] = String(candidate[key] || fallback).slice(0, limit);
+    }
 
-    if (Number.isFinite(lat)) selection.latitude = Number(lat.toFixed(6));
-    if (Number.isFinite(lng)) selection.longitude = Number(lng.toFixed(6));
+    for (const [source, target, minimum, maximum] of [
+      ["lat", "latitude", -90, 90],
+      ["lng", "longitude", -180, 180],
+    ]) {
+      if (candidate[source] === undefined || candidate[source] === null) continue;
+      const coordinate = Number(candidate[source]);
+      if (!Number.isFinite(coordinate) || coordinate < minimum || coordinate > maximum) {
+        throw new RangeError(`Selection ${source} is outside its valid range.`);
+      }
+      selection[target] = Number(coordinate.toFixed(6));
+    }
 
     return {
       schema: "gzg.atlas.selection/1.0",
-      deployable: Boolean(deployable),
+      deployable: Boolean(candidate.deployable),
       selection,
     };
   }
@@ -159,7 +197,7 @@
     );
     return {
       ok: validate(sample).payload.selection.latitude === 0,
-      checks: 8,
+      checks: 10,
       protocol: `gzg.galaxy-message/${MESSAGE_VERSION}`,
     };
   }

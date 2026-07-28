@@ -4,7 +4,7 @@
   "galaxy": {
     "id": "ATLAS",
     "name": "A.T.L.A.S.",
-    "version": "0.1.0-alpha.1",
+    "version": "0.1.0-alpha.2",
     "status": "alpha",
     "kind": "strategic-surface",
     "standalone": true
