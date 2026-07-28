@@ -30,9 +30,17 @@ Surface: isolated in-app Chromium at `http://127.0.0.1:8780/`
    the URL-hash adapter.
 8. Console errors and warnings: none.
 
+Public surface: <https://rustycohl.github.io/ATLAS/>
+
+1. GitHub Actions deployment completed successfully.
+2. Public Page exposed version `0.1.0-alpha.1`.
+3. Default layers activated: 3/18.
+4. Public coordinate selection opened the inspector and logged the selection.
+5. “Export Selection” enabled after selection.
+6. Console errors and warnings: none.
+
 ## Remaining release checks
 
-- Repeat the core smoke against the public GitHub Page after first deployment.
 - Qualify and document a narrow/mobile viewport; the current dense operational
   layout is desktop-first.
 - Repeat direct-file procedural fallback after packaging.
